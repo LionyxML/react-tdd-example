@@ -3,7 +3,7 @@ import { Comment } from "../components/Comment";
 
 const CommentFeed = ({ header, comments }) => {
   const renderComments = () =>
-    comments.map(({ comment, index }) => <Comment key={index} {...comment} />);
+    comments.map((comment, index) => <Comment key={index} {...comment} />);
 
   return (
     <div className="comment-feed">

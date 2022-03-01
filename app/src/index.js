@@ -1,17 +1,25 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import CommentFeed from "./containers/CommentFeed";
+
+const comments = [
+  {
+    author: "Ian Wilson",
+    text: "A boats a boat but a mystery box could be anything.",
+  },
+  {
+    author: "Max Powers Jr",
+    text: "Krypton sucks.",
+  },
+  {
+    author: "Kent Beck",
+    text: "Red, Green, Refactor.",
+  },
+];
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <CommentFeed comments={comments} />
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
