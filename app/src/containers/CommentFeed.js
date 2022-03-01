@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { Comment } from "../components/Comment";
 
-const CommentFeed = ({ header, comments, createComment }) => {
+const CommentFeed = ({ header, comments, createComment, likeComment }) => {
   const [formData, setFormData] = useState({
     author: "",
     text: "",
   });
 
   const renderComments = () =>
-    comments.map((comment, index) => <Comment key={index} {...comment} />);
+    comments.map((comment, index) => (
+      <Comment key={index} onLike={handleLike} {...comment} />
+    ));
 
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.id]: event.target.value });
@@ -19,6 +21,8 @@ const CommentFeed = ({ header, comments, createComment }) => {
     const { author, text } = formData;
     createComment({ author, text });
   };
+
+  const handleLike = (id, author) => likeComment(id, author);
 
   return (
     <div className="comment-feed">

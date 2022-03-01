@@ -8,17 +8,23 @@ import CommentFeed from "./CommentFeed";
 // props factory to help us arrange tests for this component
 const createProps = (props) => ({
   header: "Comment Feed",
+  auth: {
+    name: "RahulMJ",
+  },
   comments: [
     {
-      author: "Ian Wilson",
-      text: "A boats a boat but a mystery box could be anything.",
+      id: "comment-0",
+      author: "RahulMJ",
+      text: "This is a me by me post! How tallented!",
     },
     {
+      id: "comment-1",
       author: "Max Powers Jr",
       text: "Krypton sucks.",
     },
   ],
   createComment: jest.fn(),
+  likeComment: jest.fn(),
   ...props,
 });
 
@@ -76,5 +82,17 @@ describe("CommentFeed", () => {
     // Assert - check if the desired functions were called
     expect(props.createComment).toHaveBeenCalledTimes(1);
     expect(props.createComment).toHaveBeenCalledWith(newComment);
+  });
+
+  it("allows user to like a comment", () => {
+    let props = createProps();
+    let id = props.comments[0].id;
+    const { getByTestId } = render(<CommentFeed {...props} />);
+
+    const likeNode = getByTestId(id);
+    fireEvent.click(likeNode);
+
+    expect(props.likeComment).toHaveBeenCalledTimes(1);
+    expect(props.likeComment).toHaveBeenCalledWith(id, props.auth.name);
   });
 });
