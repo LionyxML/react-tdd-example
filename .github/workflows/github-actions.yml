@@ -15,11 +15,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Setup and testing with node ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
           cache: "yarn"
+          working-directory: ./app
       - run: cd app
       - run: yarn install
       - run: yarn test --watchAll=false
