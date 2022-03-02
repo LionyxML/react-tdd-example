@@ -9,6 +9,7 @@ import CommentFeed from "./CommentFeed";
 const createProps = (props) => ({
   header: "Comment Feed",
   auth: {
+    id: "user-0",
     name: "RahulMJ",
   },
   comments: [
@@ -16,15 +17,18 @@ const createProps = (props) => ({
       id: "comment-0",
       author: "RahulMJ",
       text: "This is a me by me post! How tallented!",
+      likes: [""],
     },
     {
       id: "comment-1",
       author: "Max Powers Jr",
       text: "Krypton sucks.",
+      likes: ["user-0"],
     },
   ],
   createComment: jest.fn(),
   likeComment: jest.fn(),
+  unlikeComment: jest.fn(),
   ...props,
 });
 
@@ -93,6 +97,18 @@ describe("CommentFeed", () => {
     fireEvent.click(likeNode);
 
     expect(props.likeComment).toHaveBeenCalledTimes(1);
-    expect(props.likeComment).toHaveBeenCalledWith(id, props.auth.name);
+    expect(props.likeComment).toHaveBeenCalledWith(id, props.auth);
+  });
+
+  it("allows the user to unlike a comment", () => {
+    let props = createProps();
+    let id = props.comments[1].id;
+    const { getByTestId } = render(<CommentFeed {...props} />);
+
+    const likeNode = getByTestId(id);
+    fireEvent.click(likeNode);
+
+    expect(props.unlikeComment).toHaveBeenCalledTimes(1);
+    expect(props.unlikeComment).toHaveBeenCalledWith(id, props.auth);
   });
 });

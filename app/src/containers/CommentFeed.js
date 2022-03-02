@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { Comment } from "../components/Comment";
 
-const CommentFeed = ({ header, comments, createComment, likeComment }) => {
+const CommentFeed = ({
+  header,
+  comments,
+  createComment,
+  likeComment,
+  unlikeComment,
+  auth,
+}) => {
   const [formData, setFormData] = useState({
     author: "",
     text: "",
@@ -9,7 +16,13 @@ const CommentFeed = ({ header, comments, createComment, likeComment }) => {
 
   const renderComments = () =>
     comments.map((comment, index) => (
-      <Comment key={index} onLike={handleLike} {...comment} />
+      <Comment
+        key={index}
+        {...comment}
+        currentUser={auth}
+        onLike={handleLike}
+        onDislike={handleDislike}
+      />
     ));
 
   const handleChange = (event) => {
@@ -22,7 +35,9 @@ const CommentFeed = ({ header, comments, createComment, likeComment }) => {
     createComment({ author, text });
   };
 
-  const handleLike = (id, author) => likeComment(id, author);
+  const handleLike = (id) => likeComment(id, auth);
+
+  const handleDislike = (id) => unlikeComment(id, auth);
 
   return (
     <div className="comment-feed">
