@@ -1,8 +1,8 @@
-/* eslint-disable testing-library/no-node-access */
-/* eslint-disable testing-library/no-container */
-/* eslint-disable testing-library/prefer-screen-queries */
+// You're gonna find this very useful:
+// https://testing-library.com/docs/react-testing-library/cheatsheet/
+
 import React from "react";
-import { fireEvent, render } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import CommentFeed from "./CommentFeed";
 
 // props factory to help us arrange tests for this component
@@ -36,14 +36,16 @@ describe("CommentFeed", () => {
   let props = { header: "Comment Feed", comments: [] };
 
   it("renders the CommentFeed component", () => {
-    const { queryByText } = render(<CommentFeed {...props} />);
-    const header = queryByText("Comment Feed");
+    render(<CommentFeed {...props} />);
+    const header = screen.queryByText("Comment Feed");
     expect(header.innerHTML).toBe(props.header);
   });
 
   it("renders the comment list", () => {
-    const { container } = render(<CommentFeed {...props} />);
-    const commentNodes = container.querySelectorAll(".comment");
+    render(<CommentFeed {...props} />);
+    const commentNodes = screen.queryAllByText(
+      (_, element) => element.className === "comment"
+    );
     expect(commentNodes.length).toBe(props.comments.length);
   });
 
@@ -59,8 +61,11 @@ describe("CommentFeed", () => {
       },
     ];
     props = { header: "Comment Feed", comments };
-    const { container } = render(<CommentFeed {...props} />);
-    const commentNodes = container.querySelectorAll(".comment");
+    render(<CommentFeed {...props} />);
+    const commentNodes = screen.queryAllByText(
+      (_, element) => element.className === "comment"
+    );
+
     expect(commentNodes.length).toBe(props.comments.length);
   });
 
@@ -69,10 +74,12 @@ describe("CommentFeed", () => {
     // Arrange - create props and locate elements
     const newComment = { author: "Socrates", text: "Why?" };
     let props = createProps();
-    const { container, getByLabelText } = render(<CommentFeed {...props} />);
-    const authorNode = getByLabelText("Author");
-    const textNode = getByLabelText("Comment");
-    const formNode = container.querySelector("form");
+    render(<CommentFeed {...props} />);
+    const authorNode = screen.getByLabelText("Author");
+    const textNode = screen.getByLabelText("Comment");
+    const formNode = screen.queryByText(
+      (_, element) => element.className === "comment-form"
+    );
 
     // Act - simulates changes to elements
     fireEvent.change(authorNode, {
@@ -91,9 +98,9 @@ describe("CommentFeed", () => {
   it("allows user to like a comment", () => {
     let props = createProps();
     let id = props.comments[0].id;
-    const { getByTestId } = render(<CommentFeed {...props} />);
+    render(<CommentFeed {...props} />);
 
-    const likeNode = getByTestId(id);
+    const likeNode = screen.getByTestId(id);
     fireEvent.click(likeNode);
 
     expect(props.likeComment).toHaveBeenCalledTimes(1);
@@ -103,9 +110,9 @@ describe("CommentFeed", () => {
   it("allows the user to unlike a comment", () => {
     let props = createProps();
     let id = props.comments[1].id;
-    const { getByTestId } = render(<CommentFeed {...props} />);
+    render(<CommentFeed {...props} />);
 
-    const likeNode = getByTestId(id);
+    const likeNode = screen.getByTestId(id);
     fireEvent.click(likeNode);
 
     expect(props.unlikeComment).toHaveBeenCalledTimes(1);
