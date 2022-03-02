@@ -1,6 +1,6 @@
 # React TDD Example
 
-[![TDD Example Status](https://github.com/LionyxML/react-tdd-example/actions/workflows/github-actions.yml/badge.svg?branch=main)](https://github.com/LionyxML/react-tdd-example/actions/workflows/github-actions.yml)
+[![TDD Example Status:](https://github.com/LionyxML/react-tdd-example/actions/workflows/github-actions.yml/badge.svg)](https://github.com/LionyxML/react-tdd-example/actions/workflows/github-actions.yml)
 
 An example on how to apply TDD with your React application.
 
